@@ -38,5 +38,10 @@
   * xmms.c: Fixed get_info bug reported by Charles Blackburn
     <charlesb@summerfield-technology.co.uk>
 
-Thu Oct 31 10:44:58 2002, pabs <pabs@pablotron.org
+Thu Oct 31 10:44:58 2002, pabs <pabs@pablotron.org>
   * removed doc/ from CVS
+
+* Sat Jul 10 14:24:29 2004, pabs <pabs@pablotron.org>
+  * xmms.c: update documentation for get_playlist_time (fixes ambiguity
+  reported by Ian Macdonald <ian@caliban.org>)
+  * xmms.c: added block form to Xmms::Remote#playlist

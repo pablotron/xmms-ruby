@@ -249,33 +249,53 @@ static VALUE xr_paused(VALUE self) {
 /********************/
 
 /*
- * Return the current playlist.
+ * Return the current playlist.  If a block is given, pass each playlist
+ * element to the block.
+ *
+ * Note: Returning the full array can be very slow for large playlists.
  *
  * Example:
- *   remote.playlist.each { |i|
- *     title, file = i
- *     puts "'#{title}', #{file}"
- *   }
+ *   # print out info for each element in the playlist
+ *   ary = remote.playlist
+ *   ary.each do |ary|
+ *     title, file, time = ary
+ *     puts "'#{title}' (#{time}ms), #{file}"
+ *   end
+ *
+ *   # print out info for each element in the playlist (using block 
+ *   # syntax; much faster)
+ *   remote.playlist { |e| puts "'#{e[0]}' (#{e[2]}), #{e[1]}" }
  *
  */
 static VALUE xr_pl(VALUE self) {
   int i, len, *session;
-  VALUE e, ary;
+  VALUE e, ret;
+  char block_given = 0;
   
   Data_Get_Struct(self, int, session);
 
-  ary = rb_ary_new();
+  block_given = rb_block_given_p();
+  ret = block_given ? rb_ary_new() : Qnil;
   len = xmms_remote_get_playlist_length(*session);
 
+  e = Qnil;
   for (i = 0; i < len; i++) {
-    e = rb_ary_new();
+    if (!block_given || e == Qnil)
+      e = rb_ary_new();
+    else
+      rb_ary_clear(e);
+
+    /* add info for current playlist element to array */
     rb_ary_push(e, rb_str_new2(xmms_remote_get_playlist_title(*session, i)));
     rb_ary_push(e, rb_str_new2(xmms_remote_get_playlist_file(*session, i)));
     rb_ary_push(e, INT2FIX(xmms_remote_get_playlist_time(*session, i)));
-    rb_ary_push(ary, e);
+
+    /* if block was given, yield current element; otherwise push it
+     * into the return array */
+    block_given ? rb_yield(e) : rb_ary_push(ret, e);
   }
 
-  return ary;
+  return ret;
 }
 
 /*
@@ -488,13 +508,13 @@ static VALUE xr_pl_title(int argc, VALUE *argv, VALUE self) {
 }
 
 /*
- * Get the "playlist" time of a song.
+ * Get the duration of a song, in milliseconds
  *
  * Examples:
- *   # get the "playlist" time of the current song
+ *   # get the duration of the current song
  *   time = remote.playlist_time
  *
- *   # get the "playlist" time of song 23 in the playlist
+ *   # get the duration of song 23 in the playlist
  *   time = remote.playlist_time 23
  *
  */
