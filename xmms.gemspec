@@ -28,7 +28,7 @@ spec = Gem::Specification.new do |s|
   #### Load-time details: library and application (you will need one or both).
   s.autorequire = 'fam'
   s.has_rdoc = true
-  s.rdoc_options = ['xmms.c', 'README', 'ChangeLog', 'AUTHORS', 'COPYING', 'TODO']
+  s.rdoc_options = ['--ri-site', '--webcvs', 'http://cvs.pablotron.org/cgi-bin/viewcvs.cgi/xmms-ruby/', 'xmms.c', 'README', 'ChangeLog', 'AUTHORS', 'COPYING', 'TODO']
 
   #### Author and project details.
 
