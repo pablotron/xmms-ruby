@@ -1,10 +1,11 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 
-#########################################################################
-# get_playlist.rb - create an XML playlist from the XMMS playlist       #
-#########################################################################
+########################################################################
+# get_playlist.rb - create an XML playlist from the XMMS playlist      #
+# by Paul Duncan <pabs@pablotron.org>                                  #
+########################################################################
 
-# load the XMMS bindings
+# load XMMS bindings
 require 'xmms'
 
 # create a new Xmms::Remote object
@@ -20,20 +21,18 @@ class String
 end
 
 # start the XML output 
-puts '<?xml version="1.0">'
-puts '<XmmsPlaylist>'
+puts '<?xml version="1.0" encoding="ISO-8859-1">',
+     '<XmmsPlaylist>'
 
 # step through each element in the playlist and print it's information
 # in XML form
-r.playlist.each { |entry|
-  title, file, time = entry
-
-  puts '  <entry>'
-  puts "    <title>#{title.xml_escape!}</title>"
-  puts "    <filename>#{file.xml_escape!}</filename>"
-  puts "    <duration>#{time}</duration>"
-  puts '  </entry>'
-}
+r.playlist do |title, file, time|
+  puts '  <entry>',
+       "    <title>#{title.xml_escape!}</title>",
+       "    <filename>#{file.xml_escape!}</filename>",
+       "    <duration>#{time}</duration>",
+       '  </entry>',
+end
 
 # close the XML output
 puts '</XmmsPlaylist>'

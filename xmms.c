@@ -310,15 +310,17 @@ static VALUE xr_pl(VALUE self) {
   CHECK_SESSION(session);
 
   block_given = rb_block_given_p();
-  ret = block_given ? rb_ary_new() : Qnil;
+  ret = block_given ? Qnil : rb_ary_new();
   len = xmms_remote_get_playlist_length(*session);
 
   e = Qnil;
   for (i = 0; i < len; i++) {
+    /* if we're yielding to a block, pass the same array each time; this 
+     * should speed things up (by saving on allocations) */
     if (!block_given || e == Qnil)
       e = rb_ary_new();
     else
-      rb_ary_clear(e);
+      e = rb_ary_clear(e);
 
     /* add info for current playlist element to array */
     rb_ary_push(e, rb_str_new2(xmms_remote_get_playlist_title(*session, i)));

@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 
 require 'xmms'
 
@@ -33,6 +33,10 @@ xr.playlist.each { |entry|
   title, file, time = entry
   puts "'#{title}', #{time}, #{file}"
 }
+
+# test playlist block method
+$stderr.puts 'testing Xmms::Remote#playlist (block)'
+xr.playlist { |title, file, time| puts "'#{title}', #{time}, #{file}" }
 
 # test [] method
 $stderr.puts 'testing Xmms::Remote#[]'
