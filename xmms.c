@@ -28,14 +28,14 @@
 #include <xmms/xmmsctrl.h>
 #include <ruby.h>
 
+#define UNUSED(x)  ((void) (x))
+
 #define VERSION "0.1.1"
 #define NUM_BANDS 10
 #define BAND_MAX 20.0
 #define BAND_MIN -20.0
 #define VOL_MAX 100
 #define VOL_MIN 0
-
-#define UNUSED(x)  ((void) (x))
 
 /****************************/
 /* CLASS AND MODULE GLOBALS */
