@@ -60,3 +60,9 @@ Thu Oct 31 10:44:58 2002, pabs <pabs@pablotron.org>
   * README: increment version number and date
   * added examples/m3u.rb
   * added examples/pls.rb
+  * examples/get_playlist.rb: minor updates
+  * examples/test_xmms.rb: ditto
+
+* Sat Jul 10 17:29:50 2004, pabs <pabs@pablotron.org>
+  * MANIFEST: updated to reflect new examples
+  * releasing version 0.1.2
