@@ -43,5 +43,14 @@ Thu Oct 31 10:44:58 2002, pabs <pabs@pablotron.org>
 
 * Sat Jul 10 14:24:29 2004, pabs <pabs@pablotron.org>
   * xmms.c: update documentation for get_playlist_time (fixes ambiguity
-  reported by Ian Macdonald <ian@caliban.org>)
+    reported by Ian Macdonald <ian@caliban.org>)
   * xmms.c: added block form to Xmms::Remote#playlist
+
+* Sat Jul 10 14:51:30 2004, pabs <pabs@pablotron.org>
+  * xmms.c: check to make sure session is running before executing remote
+    commands; raise an Xmms::Error exception if it isn't.  This appears to fix
+    the Xmms::Remote#get_info sillyness here.  Can anyone else confirm?
+  * xmms.c: update documentation of all methods to reflect Xmms::Error
+    behavior.
+  * xmms.c: 'indexes' => 'indices'.  Did I learn english in a barn?
+  * xmms.c: update documentation to reflect all possible exceptions

@@ -41,10 +41,14 @@
 /* CLASS AND MODULE GLOBALS */
 /****************************/
 static VALUE mXmms,
-             cRemote;
+             cRemote,
+             eError;
 
 /*
  * Create a new Xmms::Remote object.
+ *
+ * This method raises an ArgumentError exception if the number of
+ * arguments isn't 0 or 1.
  *
  * Examples:
  *   # standard setup (one running copy of XMMS)
@@ -90,6 +94,8 @@ static VALUE xr_init(int argc, VALUE *argv, VALUE self) {
   return self;
 }
 
+#define CHECK_SESSION(session) if (!xmms_remote_is_running(*session)) rb_raise(eError, "XMMS is not running")
+
 /*
  * Get the version of XMMS.
  *
@@ -104,7 +110,8 @@ static VALUE xr_version(VALUE self) {
   int *session;
 
   Data_Get_Struct(self, int, session);
-
+  CHECK_SESSION(session);
+  
   return INT2FIX(xmms_remote_get_version(*session));
 }
 
@@ -115,6 +122,8 @@ static VALUE xr_version(VALUE self) {
 /*
  * Play current song.
  *
+ * This method raises an Xmms::Error exception if XMMS is not running.
+ *
  * Example:
  *   remote.play
  *
@@ -123,6 +132,7 @@ static VALUE xr_play(VALUE self) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   xmms_remote_play(*session);
 
   return self;
@@ -130,6 +140,8 @@ static VALUE xr_play(VALUE self) {
 
 /*
  * Pause current song.
+ *
+ * This method raises an Xmms::Error exception if XMMS is not running.
  *
  * Example:
  *   remote.pause
@@ -139,6 +151,7 @@ static VALUE xr_pause(VALUE self) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   xmms_remote_pause(*session);
 
   return self;
@@ -146,6 +159,8 @@ static VALUE xr_pause(VALUE self) {
 
 /*
  * Stop current song.
+ *
+ * This method raises an Xmms::Error exception if XMMS is not running.
  *
  * Example:
  *   remote.stop
@@ -155,6 +170,7 @@ static VALUE xr_stop(VALUE self) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   xmms_remote_stop(*session);
 
   return self;
@@ -162,6 +178,8 @@ static VALUE xr_stop(VALUE self) {
 
 /*
  * XMMS eject button (toggle add file dialog).
+ *
+ * This method raises an Xmms::Error exception if XMMS is not running.
  *
  * Example:
  *   remote.eject
@@ -171,6 +189,7 @@ static VALUE xr_eject(VALUE self) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   xmms_remote_eject(*session);
 
   return self;
@@ -178,6 +197,8 @@ static VALUE xr_eject(VALUE self) {
 
 /*
  * Quit XMMS.
+ *
+ * This method raises an Xmms::Error exception if XMMS is not running.
  *
  * Example:
  *   remote.quit
@@ -187,6 +208,7 @@ static VALUE xr_quit(VALUE self) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   xmms_remote_quit(*session);
 
   return self;
@@ -194,6 +216,8 @@ static VALUE xr_quit(VALUE self) {
 
 /*
  * Toggle Play/Pause status.
+ *
+ * This method raises an Xmms::Error exception if XMMS is not running.
  *
  * Example:
  *   remote.play_pause
@@ -203,6 +227,7 @@ static VALUE xr_play_pause(VALUE self) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   xmms_remote_play_pause(*session);
 
   return self;
@@ -215,6 +240,8 @@ static VALUE xr_play_pause(VALUE self) {
 /*
  * Is XMMS playing?
  *
+ * This method raises an Xmms::Error exception if XMMS is not running.
+ *
  * Examples:
  *   puts 'playing' if remote.is_playing?
  *   puts 'playing' if remote.playing?
@@ -224,12 +251,15 @@ static VALUE xr_playing(VALUE self) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
 
   return xmms_remote_is_playing(*session) ? Qtrue : Qfalse;
 }
 
 /*
  * Is XMMS paused?
+ *
+ * This method raises an Xmms::Error exception if XMMS is not running.
  *
  * Examples:
  *   puts 'paused' if remote.is_paused?
@@ -240,6 +270,7 @@ static VALUE xr_paused(VALUE self) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
 
   return xmms_remote_is_paused(*session) ? Qtrue : Qfalse;
 }
@@ -252,7 +283,10 @@ static VALUE xr_paused(VALUE self) {
  * Return the current playlist.  If a block is given, pass each playlist
  * element to the block.
  *
- * Note: Returning the full array can be very slow for large playlists.
+ * This method raises an Xmms::Error exception if XMMS is not running.
+ *
+ * Note: Returning the full array can be very slow for large playlists;
+ * use the block form instead.
  *
  * Example:
  *   # print out info for each element in the playlist
@@ -273,6 +307,7 @@ static VALUE xr_pl(VALUE self) {
   char block_given = 0;
   
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
 
   block_given = rb_block_given_p();
   ret = block_given ? rb_ary_new() : Qnil;
@@ -300,6 +335,11 @@ static VALUE xr_pl(VALUE self) {
 
 /*
  * Add one or more songs to the playlist.
+ *
+ * This method raises an Xmms::Error exception if XMMS is not running,
+ * an ArgumentError exception if the number of arguments is less than 1,
+ * or a TypeError exception if the argument isn't a String, True, or
+ * False.
  *
  * Examples:
  *   # replace the current playlist with one song
@@ -337,6 +377,7 @@ static VALUE xr_pl_add(int argc, VALUE *argv, VALUE self) {
   }
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   xmms_remote_playlist(*session, list, max, enqueue);
 
   /* free the list, but not the elements */
@@ -348,6 +389,8 @@ static VALUE xr_pl_add(int argc, VALUE *argv, VALUE self) {
 /*
  * Add a URL to the current playlist.
  *
+ * This method raises an Xmms::Error exception if XMMS is not running.
+ *
  * Examples:
  *   remote.add_url 'http://www.hhmecca.net/cool_song.mp3'
  *
@@ -356,6 +399,7 @@ static VALUE xr_pl_add_url(VALUE self, VALUE url) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   xmms_remote_playlist_add_url_string(*session, RSTRING(url)->ptr);
 
   return self;
@@ -363,6 +407,8 @@ static VALUE xr_pl_add_url(VALUE self, VALUE url) {
 
 /*
  * Insert a URL into the current playlist.
+ *
+ * This method raises an Xmms::Error exception if XMMS is not running.
  *
  * Examples:
  *   # add a url after the 45th element in the playlist
@@ -373,6 +419,7 @@ static VALUE xr_pl_ins_url(VALUE self, VALUE url, VALUE pos) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   xmms_remote_playlist_ins_url_string(*session,
                                       RSTRING(url)->ptr,
                                       NUM2INT(pos));
@@ -383,6 +430,8 @@ static VALUE xr_pl_ins_url(VALUE self, VALUE url, VALUE pos) {
 /*
  * Delete the Nth element of the current playlist.
  *
+ * This method raises an Xmms::Error exception if XMMS is not running.
+ *
  * Examples:
  *   remote.delete 26  # delete the 26th playlist element
  *
@@ -391,6 +440,7 @@ static VALUE xr_pl_del(VALUE self, VALUE pos) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   xmms_remote_playlist_delete(*session, NUM2INT(pos));
 
   return self;
@@ -407,6 +457,7 @@ static VALUE xr_pl_clear(VALUE self) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   xmms_remote_playlist_clear(*session);
 
   return self;
@@ -414,6 +465,8 @@ static VALUE xr_pl_clear(VALUE self) {
 
 /*
  * Get the current playlist position.
+ *
+ * This method raises an Xmms::Error exception if XMMS is not running.
  *
  * Examples:
  *   song_number = remote.position
@@ -425,12 +478,15 @@ static VALUE xr_pl_pos(VALUE self) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
 
   return INT2FIX(xmms_remote_get_playlist_pos(*session));
 }
 
 /*
  * Set the current playlist position.
+ *
+ * This method raises an Xmms::Error exception if XMMS is not running.
  *
  * Examples:
  *   remote.pos = 45
@@ -442,6 +498,7 @@ static VALUE xr_pl_set_pos(VALUE self, VALUE pos) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   xmms_remote_set_playlist_pos(*session, NUM2INT(pos));
 
   return self;
@@ -449,6 +506,10 @@ static VALUE xr_pl_set_pos(VALUE self, VALUE pos) {
 
 /*
  * Get the file path of a song.
+ *
+ * This method raises an Xmms::Error exception if XMMS is not running,
+ * or an ArgumentError exception if the number of arguments isn't 0 or
+ * 1.
  *
  * Examples:
  *   # get the path of the current song
@@ -462,6 +523,7 @@ static VALUE xr_pl_file(int argc, VALUE *argv, VALUE self) {
   int pos, *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
 
   switch (argc) {
     case 0:
@@ -480,6 +542,10 @@ static VALUE xr_pl_file(int argc, VALUE *argv, VALUE self) {
 /*
  * Get the title of a song.
  *
+ * This method raises an Xmms::Error exception if XMMS is not running,
+ * or an ArgumentError exception if the number of arguments isn't 0 or
+ * 1.
+ *
  * Examples:
  *   # get the title of the current song
  *   path = remote.file
@@ -492,6 +558,7 @@ static VALUE xr_pl_title(int argc, VALUE *argv, VALUE self) {
   int pos, *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
 
   switch (argc) {
     case 0:
@@ -510,6 +577,10 @@ static VALUE xr_pl_title(int argc, VALUE *argv, VALUE self) {
 /*
  * Get the duration of a song, in milliseconds
  *
+ * This method raises an Xmms::Error exception if XMMS is not running,
+ * or an ArgumentError exception if the number of arguments isn't 0 or
+ * 1.
+ *
  * Examples:
  *   # get the duration of the current song
  *   time = remote.playlist_time
@@ -522,6 +593,7 @@ static VALUE xr_pl_time(int argc, VALUE *argv, VALUE self) {
   int pos, *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
 
   switch (argc) {
     case 0:
@@ -540,6 +612,8 @@ static VALUE xr_pl_time(int argc, VALUE *argv, VALUE self) {
 /*
  * Return information about a specific song in the playlist.
  *
+ * This method raises an Xmms::Error exception if XMMS is not running.
+ *
  * Examples:
  *   title, file, time = remote[45] # get info about the 45th song
  *   info = remote.get_entry 45 # get info about the 45th song
@@ -550,6 +624,7 @@ static VALUE xr_pl_ary(VALUE self, VALUE pos) {
   VALUE ary;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
 
   p = NUM2INT(pos);
   ary = rb_ary_new();
@@ -567,6 +642,8 @@ static VALUE xr_pl_ary(VALUE self, VALUE pos) {
 /*
  * Get the output time of the current song.
  *
+ * This method raises an Xmms::Error exception if XMMS is not running.
+ *
  * Examples:
  *   time = remote.time
  *   time = remote.output_time
@@ -576,12 +653,15 @@ static VALUE xr_time(VALUE self) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
 
   return INT2FIX(xmms_remote_get_output_time(*session));
 }
 
 /*
  * Jump to a specific time of the current song.
+ *
+ * This method raises an Xmms::Error exception if XMMS is not running.
  *
  * Examples:
  *   remote.jump 45   # jump 45 seconds into the current song
@@ -592,6 +672,7 @@ static VALUE xr_jump(VALUE self, VALUE pos) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
 
   xmms_remote_jump_to_time(*session, NUM2INT(pos));
 
@@ -600,6 +681,8 @@ static VALUE xr_jump(VALUE self, VALUE pos) {
 
 /*
  * Go to the previous song.
+ *
+ * This method raises an Xmms::Error exception if XMMS is not running.
  *
  * Example:
  *   remote.prev
@@ -617,6 +700,8 @@ static VALUE xr_prev(VALUE self) {
 /*
  * Go to the next song.
  *
+ * This method raises an Xmms::Error exception if XMMS is not running.
+ *
  * Example:
  *   remote.next
  *
@@ -625,6 +710,7 @@ static VALUE xr_next(VALUE self) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   xmms_remote_playlist_next(*session);
 
   return self;
@@ -637,6 +723,8 @@ static VALUE xr_next(VALUE self) {
 /*
  * Get the stereo volume level.
  *
+ * This method raises an Xmms::Error exception if XMMS is not running.
+ *
  * Example:
  *   left, right = remote.get_stereo_volume
  *   left, right = remote.stereo_volume
@@ -647,6 +735,7 @@ static VALUE xr_stereo_vol(VALUE self) {
   VALUE ary;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   xmms_remote_get_volume(*session, &l, &r);
 
   ary = rb_ary_new();
@@ -659,6 +748,8 @@ static VALUE xr_stereo_vol(VALUE self) {
 /*
  * Get the main volume level.
  *
+ * This method raises an Xmms::Error exception if XMMS is not running.
+ *
  * Example:
  *   vol = remote.volume
  *   vol = remote.main_volume
@@ -669,12 +760,15 @@ static VALUE xr_main_vol(VALUE self) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   
   return INT2FIX(xmms_remote_get_main_volume(*session));
 }
 
 /* 
  * Set the stereo volume level.
+ *
+ * This method raises an Xmms::Error exception if XMMS is not running.
  *
  * Examples:
  *   remote.set_stereo_volume left, right
@@ -687,6 +781,7 @@ static VALUE xr_set_stereo_vol(VALUE self, VALUE l, VALUE r) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   xmms_remote_set_volume(*session, NUM2INT(l), NUM2INT(r));
 
   return self;
@@ -694,6 +789,8 @@ static VALUE xr_set_stereo_vol(VALUE self, VALUE l, VALUE r) {
 
 /*
  * Set the main volume level.
+ *
+ * This method raises an Xmms::Error exception if XMMS is not running.
  *
  * Examples:
  *   remote.volume = 23
@@ -705,6 +802,7 @@ static VALUE xr_set_main_vol(VALUE self, VALUE vol) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   xmms_remote_set_main_volume(*session, NUM2INT(vol));
 
   return self;
@@ -718,6 +816,8 @@ static VALUE xr_set_main_vol(VALUE self, VALUE vol) {
 /*
  * Get the balance level.
  *
+ * This method raises an Xmms::Error exception if XMMS is not running.
+ *
  * Note: as of XMMS 1.2.6 xmms_remote_get_balance() does not appear to
  * work correctly when XMMS is paused or stopped, so this function doesn't
  * either.
@@ -730,12 +830,15 @@ static VALUE xr_balance(VALUE self) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   
   return INT2FIX(xmms_remote_get_balance(*session));
 }
 
 /*
  * Set the balance level.
+ *
+ * This method raises an Xmms::Error exception if XMMS is not running.
  *
  * Note: as of XMMS 1.2.6 xmms_remote_set_balance() does not appear to
  * work correctly when XMMS is paused or stopped, so this function doesn't
@@ -749,6 +852,7 @@ static VALUE xr_set_balance(VALUE self, VALUE bal) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   xmms_remote_set_balance(*session, NUM2INT(bal));
 
   return self;
@@ -761,6 +865,8 @@ static VALUE xr_set_balance(VALUE self, VALUE bal) {
 /*
  * Get the current skin file.
  *
+ * This method raises an Xmms::Error exception if XMMS is not running.
+ *
  * Examples:
  *   skin = remote.get_skin
  *   skin = remote.skin
@@ -770,12 +876,15 @@ static VALUE xr_skin(VALUE self) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
 
   return rb_str_new2(xmms_remote_get_skin(*session));
 }
 
 /*
  * Set the current skin file.
+ *
+ * This method raises an Xmms::Error exception if XMMS is not running.
  *
  * Examples:
  *   remote.set_skin 'path/to/cool_skin.zip'
@@ -786,6 +895,7 @@ static VALUE xr_set_skin(VALUE self, VALUE skin) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   xmms_remote_set_skin(*session, RSTRING(skin)->ptr);
 
   return self;
@@ -798,6 +908,8 @@ static VALUE xr_set_skin(VALUE self, VALUE skin) {
 /*
  * Set the visibility of the main window.
  *
+ * This method raises an Xmms::Error exception if XMMS is not running.
+ *
  * Examples:
  *   remote.set_main_toggle true
  *   remote.main_visible = true
@@ -808,6 +920,7 @@ static VALUE xr_main_toggle(VALUE self, VALUE vis) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   xmms_remote_main_win_toggle(*session, vis);
 
   return self;
@@ -815,6 +928,8 @@ static VALUE xr_main_toggle(VALUE self, VALUE vis) {
 
 /*
  * Get the visibility of the main window.
+ *
+ * This method raises an Xmms::Error exception if XMMS is not running.
  *
  * Examples:
  *   puts 'main window visible' if remote.main_visible?
@@ -825,12 +940,15 @@ static VALUE xr_is_main(VALUE self) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
 
   return xmms_remote_is_main_win(*session) ? Qtrue : Qfalse;
 }
 
 /*
  * Set the visibility of the playlist window.
+ *
+ * This method raises an Xmms::Error exception if XMMS is not running.
  *
  * Examples:
  *   remote.set_playlist_toggle true
@@ -843,6 +961,7 @@ static VALUE xr_pl_toggle(VALUE self, VALUE vis) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   xmms_remote_pl_win_toggle(*session, vis);
 
   return self;
@@ -850,6 +969,8 @@ static VALUE xr_pl_toggle(VALUE self, VALUE vis) {
 
 /*
  * Get the visibility of the playlist window.
+ *
+ * This method raises an Xmms::Error exception if XMMS is not running.
  *
  * Examples:
  *   puts 'playlist window visible' if remote.playlist_visible?
@@ -862,12 +983,15 @@ static VALUE xr_is_pl(VALUE self) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
 
   return xmms_remote_is_pl_win(*session) ? Qtrue : Qfalse;
 }
 
 /*
  * Set the visibility of the equalizer window.
+ *
+ * This method raises an Xmms::Error exception if XMMS is not running.
  *
  * Examples:
  *   remote.set_equalizer_toggle true
@@ -880,6 +1004,7 @@ static VALUE xr_eq_toggle(VALUE self, VALUE vis) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   xmms_remote_eq_win_toggle(*session, vis);
 
   return self;
@@ -887,6 +1012,8 @@ static VALUE xr_eq_toggle(VALUE self, VALUE vis) {
 
 /*
  * Get the visibility of the equalizer window.
+ *
+ * This method raises an Xmms::Error exception if XMMS is not running.
  *
  * Examples:
  *   puts 'equalizer window visible' if remote.equalizer_visible?
@@ -899,12 +1026,15 @@ static VALUE xr_is_eq(VALUE self) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
 
   return xmms_remote_is_eq_win(*session) ? Qtrue : Qfalse;
 }
 
 /*
  * Show the preferences dialog.
+ *
+ * This method raises an Xmms::Error exception if XMMS is not running.
  *
  * Examples:
  *   remote.show_prefs
@@ -915,6 +1045,7 @@ static VALUE xr_prefs(VALUE self) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   xmms_remote_show_prefs_box(*session);
 
   return self;
@@ -922,6 +1053,8 @@ static VALUE xr_prefs(VALUE self) {
 
 /*
  * Set the "always on top" flag.
+ *
+ * This method raises an Xmms::Error exception if XMMS is not running.
  *
  * Examples:
  *   remote.set_always_on_top true
@@ -933,6 +1066,7 @@ static VALUE xr_set_aot(VALUE self, VALUE aot) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   xmms_remote_toggle_aot(*session, aot);
 
   return self;
@@ -945,6 +1079,8 @@ static VALUE xr_set_aot(VALUE self, VALUE aot) {
 /*
  * Toggle the repeat flag.
  *
+ * This method raises an Xmms::Error exception if XMMS is not running.
+ *
  * Example:
  *   remote.toggle_repeat
  *
@@ -953,6 +1089,7 @@ static VALUE xr_toggle_repeat(VALUE self) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   xmms_remote_toggle_repeat(*session);
 
   return self;
@@ -960,6 +1097,8 @@ static VALUE xr_toggle_repeat(VALUE self) {
 
 /*
  * Is the repeat flag set?
+ *
+ * This method raises an Xmms::Error exception if XMMS is not running.
  *
  * Examples:
  *   puts 'repeating' if remote.is_repeating?
@@ -972,12 +1111,15 @@ static VALUE xr_repeat(VALUE self) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
 
   return xmms_remote_is_repeat(*session) ? Qtrue : Qfalse;
 }
 
 /*
  * Toggle the shuffle flag.
+ *
+ * This method raises an Xmms::Error exception if XMMS is not running.
  *
  * Example:
  *   remote.toggle_shuffle
@@ -987,6 +1129,7 @@ static VALUE xr_toggle_shuffle(VALUE self) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   xmms_remote_toggle_shuffle(*session);
 
   return self;
@@ -994,6 +1137,8 @@ static VALUE xr_toggle_shuffle(VALUE self) {
 
 /*
  * Is the shuffle flag set?
+ *
+ * This method raises an Xmms::Error exception if XMMS is not running.
  *
  * Examples:
  *   puts 'shuffling' if remote.is_shuffling?
@@ -1006,6 +1151,7 @@ static VALUE xr_shuffle(VALUE self) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
 
   return xmms_remote_is_shuffle(*session) ? Qtrue : Qfalse;
 }
@@ -1015,7 +1161,9 @@ static VALUE xr_shuffle(VALUE self) {
 /****************/
 
 /*
- * Get various about the current song.
+ * Get various information about the current song.
+ *
+ * This method raises an Xmms::Error exception if XMMS is not running.
  *
  * Returns an array of bitrate, frequency, and numchannels,
  * respectively.
@@ -1030,6 +1178,7 @@ static VALUE xr_info(VALUE self) {
   VALUE ary;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   xmms_remote_get_info(*session, &rate, &freq, &nch);
 
   ary = rb_ary_new();
@@ -1070,6 +1219,8 @@ static VALUE xr_running(VALUE self) {
  *
  *   [1.0, [0.0, -0.5, 0.9, 0.0, 0.0, 0.0, 0.2, 0.5, -0.1, 0.0]]
  * 
+ * This method raises an Xmms::Error exception if XMMS is not running.
+ *
  * Examples:
  *   preamp, bands = remote.get_equalizer
  *   eq = remote.eq
@@ -1081,6 +1232,7 @@ static VALUE xr_eq(VALUE self) {
   gfloat preamp, *bands;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   xmms_remote_get_eq(*session, &preamp, &bands);
 
   band_ary = rb_ary_new();
@@ -1097,6 +1249,8 @@ static VALUE xr_eq(VALUE self) {
 /*
  * Get the equalizer preamp value.
  *
+ * This method raises an Xmms::Error exception if XMMS is not running.
+ *
  * Examples:
  *   preamp = remote.get_preamp
  *   preamp = remote.preamp
@@ -1106,6 +1260,7 @@ static VALUE xr_eq_preamp(VALUE self) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
 
   return rb_float_new(xmms_remote_get_eq_preamp(*session));
 }
@@ -1113,8 +1268,11 @@ static VALUE xr_eq_preamp(VALUE self) {
 /*
  * Get an equalizer band value.
  *
- * Note that legal band indexes range from 0 to 9 instead of 1 to 10.
+ * Note: Legal band indices range from 0 to 9 instead of 1 to 10.
  * 
+ * This method raises an Xmms::Error exception if XMMS is not running,
+ * and an ArgumentError exception if the band index is out of range.
+ *
  * Examples:
  *   band = remote.get_band 2
  *   band = remote.band 8
@@ -1125,10 +1283,11 @@ static VALUE xr_eq_band(VALUE self, VALUE band) {
   int b;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   b = NUM2INT(band);
 
   if (b < 0 || b >= NUM_BANDS)
-    rb_raise(rb_eArgError, "band out of range (band < 0 or band >= 10)");
+    rb_raise(rb_eArgError, "band index out of range (band < 0 or band >= 10)");
 
   return rb_float_new(xmms_remote_get_eq_band(*session, b));
 }
@@ -1138,6 +1297,10 @@ static VALUE xr_eq_band(VALUE self, VALUE band) {
  *
  * This method takes either a preamp value and 10 band values, or a
  * preamp value and an array of band values.
+ *
+ * This method raises an Xmms::Error exception if XMMS is not running,
+ * and an ArgumentError exception if the number of arguments isn't 2 or
+ * 11.
  *
  * Examples:
  *   bands = [0.0, -0.5, 0.9, 0.0, 0.0, 0.0, 0.2, 0.5, -0.1, 0.0]
@@ -1164,6 +1327,7 @@ static VALUE xr_set_eq(int argc, VALUE *argv, VALUE self) {
   }
   
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   xmms_remote_set_eq(*session, NUM2DBL(argv[0]), bands);
 
   return self;
@@ -1171,6 +1335,8 @@ static VALUE xr_set_eq(int argc, VALUE *argv, VALUE self) {
 
 /*
  * Set the equalizer preamp value.
+ *
+ * This method raises an Xmms::Error exception if XMMS is not running.
  *
  * Examples:
  *   remote.set_preamp 0.5
@@ -1181,6 +1347,7 @@ static VALUE xr_eq_set_preamp(VALUE self, VALUE preamp) {
   int *session;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
   xmms_remote_set_eq_preamp(*session, NUM2DBL(preamp));
 
   return self;
@@ -1189,8 +1356,11 @@ static VALUE xr_eq_set_preamp(VALUE self, VALUE preamp) {
 /*
  * Set an equalizer band value.
  *
- * Note that legal band indexes range from 0 to 9 instead of 1 to 10.
+ * Note: legal band indices range from 0 to 9 instead of 1 to 10.
  * 
+ * This method raises an Xmms::Error exception if XMMS is not running,
+ * or an ArgumentError exception if the band index is out of range.
+ *
  * Example:
  *   remote.set_band 2, 0.5
  *
@@ -1200,10 +1370,11 @@ static VALUE xr_eq_set_band(VALUE self, VALUE band, VALUE val) {
   int b;
 
   Data_Get_Struct(self, int, session);
+  CHECK_SESSION(session);
 
   b = NUM2INT(band);
   if (b < 0 || b >= NUM_BANDS)
-    rb_raise(rb_eArgError, "band out of range (band < 0 or band >= 10)");
+    rb_raise(rb_eArgError, "band index out of range (band < 0 or band >= 10)");
 
   xmms_remote_set_eq_band(*session, b, NUM2DBL(val));
 
@@ -1465,4 +1636,9 @@ void Init_xmms(void) {
 
   rb_define_method(cRemote, "get_version", xr_version, 0);
   rb_define_alias(cRemote, "version", "get_version");
+
+  /**********************/
+  /* define Error class */
+  /**********************/
+  eError = rb_define_class_under(mXmms, "Error", rb_eStandardError);
 }
