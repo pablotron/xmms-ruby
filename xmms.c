@@ -1,5 +1,5 @@
 /************************************************************************/
-/* Copyright (C) 2002 Paul Duncan                                       */
+/* Copyright (C) 2002 - 2004 Paul Duncan                                */
 /*                                                                      */
 /* Permission is hereby granted, free of charge, to any person          */
 /* obtaining a copy of this software and associated documentation files */
