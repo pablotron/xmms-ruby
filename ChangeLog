@@ -76,3 +76,6 @@ Thu Oct 31 10:44:58 2002, pabs <pabs@pablotron.org>
 
 * Wed Aug 25 01:46:20 2004, pabs <pabs@pablotron.org>
   * xmms.gemspec: added CVS and ri to rdoc options
+
+* Wed Aug 25 02:10:50 2004, pabs <pabs@pablotron.org>
+  * xmms.gemspec: removed ri from rdoc options
