@@ -70,3 +70,6 @@ Thu Oct 31 10:44:58 2002, pabs <pabs@pablotron.org>
 * Sat Jul 10 17:54:22 2004, pabs <pabs@pablotron.org>
   * COPYING: updated copyright year
   * xmms.c: updated copyright year
+
+* Wed Aug 25 00:37:54 2004, pabs <pabs@pablotron.org>
+  * added xmms.gemspec
