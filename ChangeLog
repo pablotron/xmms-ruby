@@ -19,3 +19,7 @@
   * added Xmms::Remote::connect (synonym for Xmms::Remote::new)
   * added Xmms::Remote::{list,pl} (synonyms for Xmms::Remote::playlist)
   * band calls throw exception if requested band is out of range
+
+* Sunday, May 05 02:25:43 2002 EST
+  * added band contants previously, but forgot to mention it.
+  * removed $XMMS; egregious namespace violation :)

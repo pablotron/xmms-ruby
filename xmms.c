@@ -1194,9 +1194,6 @@ void Init_xmms(void) {
   /***********************/
   cRemote = rb_define_class_under(mXmms, "Remote", rb_cObject);
 
-  /* define XMMS global for short scripts */
-  rb_define_global_const("XMMS", xr_new(0, NULL, cRemote));
-
   rb_define_singleton_method(cRemote, "new", xr_new, -1);
   rb_define_singleton_method(cRemote, "connect", xr_new, -1);
 
