@@ -1,0 +1,93 @@
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Methods</title>
+<style type="text/css">
+<!--
+  body {
+background-color: #ddddff;
+     font-family: Verdana, Arial, Helvetica, sans-serif; 
+       font-size: 11px; 
+      font-style: normal;
+     line-height: 14px; 
+           color: #000040;
+  }
+div.banner {
+  background: #0000aa;
+  color:      white;
+  padding: 1;
+  margin: 0;
+  font-size: 90%;
+  font-weight: bold;
+  line-height: 1.1;
+  text-align: center;
+  width: 100%;
+}
+
+A.xx { color: white; font-weight: bold; }
+-->
+</style>
+<base target="docwin">
+</head>
+<body>
+<div class="banner"><a href="files/xmms_c.html" class="xx">Methods</a></div>
+<a href="classes/Xmms/Remote.html#M000012">add (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000013">add_url (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000033">balance= (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000016">clear (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000015">delete (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000006">eject (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000038">eq_win_toggle (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000031">get_balance (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000048">get_eq (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000052">get_eq_band (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000050">get_eq_preamp (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000054">get_info (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000028">get_main_volume (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000019">get_playlist_file (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000021">get_playlist_time (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000020">get_playlist_title (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000034">get_skin (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000027">get_stereo_volume (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000056">get_version (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000002">initialize (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000014">ins_url (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000041">is_eq_win? (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000039">is_main_win? (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000040">is_pl_win? (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000045">is_repeat? (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000055">is_running? (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000047">is_shuffle? (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000023">jump_to_time (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000036">main_win_toggle (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000001">new (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000004">pause (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000010">paused? (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000037">pl_win_toggle (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000003">play (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000008">play_pause (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000009">playing? (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000011">playlist (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000026">playlist_next (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000017">playlist_pos (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000025">playlist_prev (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000007">quit (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000032">set_balance (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000049">set_eq (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000053">set_eq_band (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000051">set_eq_preamp (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000030">set_main_volume (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000018">set_playlist_pos (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000035">set_skin (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000029">set_stereo_volume (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000042">show_prefs (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000005">stop (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000022">time (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000024">time= (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000043">toggle_aot (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000044">toggle_repeat (Xmms::Remote)</a><br />
+<a href="classes/Xmms/Remote.html#M000046">toggle_shuffle (Xmms::Remote)</a><br />
+</body></html>

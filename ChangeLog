@@ -1,0 +1,21 @@
+* Wednesday, April 24 12:41:41 2002 EDT
+  * initial code complete
+
+* Wednesday, April 24 14:36:02 2002 EST
+  * generated RDoc API reference
+  * added constants for maximum and minimum volume and bands, and for the
+    nubmer of bands (MAX_VOL, MIN_VOL, MAX_BAND, MIN_BAND, and NUM_BANDS,
+    respectively)
+  * updated rdoc comments and README for Xmms::Remote#{get,set}_balance
+    quirk
+  * correctly spaced examples so rdoc will format them properly
+  * regenerated API reference
+
+* Wednesday, April 24 16:09:28 2002 EST
+  * added examples/get_playlist.rb
+  * released version 0.1.0
+
+* Thursday, April 25 19:45:19 2002 EST
+  * added Xmms::Remote::connect (synonym for Xmms::Remote::new)
+  * added Xmms::Remote::{list,pl} (synonyms for Xmms::Remote::playlist)
+  * band calls throw exception if requested band is out of range

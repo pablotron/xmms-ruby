@@ -1,0 +1,26 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>set_eq (Xmms::Remote)</title>
+<link rel=StyleSheet href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body bgcolor="white">
+<pre>/*
+ * Set the equalizer values.
+ *
+ * This method takes either a preamp value and 10 band values, or a
+ * preamp value and an array of band values.
+ *
+ * Examples:
+ *   bands = [0.0, -0.5, 0.9, 0.0, 0.0, 0.0, 0.2, 0.5, -0.1, 0.0]
+ *   remote.set_equalizer 0.0, bands
+ *
+ *   remote.set_eq 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+ *   
+ */
+static VALUE xr_set_eq(int argc, VALUE *argv, VALUE self) {
+</pre>
+</body>
+</html>

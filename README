@@ -1,0 +1,42 @@
+XMMS-Ruby 0.1.0 README
+======================
+
+This document was last updated on Wednesday, April 24 12:42:05 2002 EDT.
+Please see the file COPYING for licensing and warranty information.  The
+latest version of this library is available at the following URL:
+http://www.pablotron.org/software/xmms-ruby/.
+
+Introduction
+============
+Xmms-Ruby is a Ruby interface to Xmms.  It allows you to adjust the
+equalizer, playlist, and playing options for one or more XMMS sessions
+within Ruby.  I haven't written a tutorial yet, but there is rdoc-
+generated API documentation in doc/, and a couple of sample ruby Xmms
+control scripts in examples/.  Feel free to email me if you have any
+additional questions.
+
+System Requirements
+===================
+- XMMS, version 1.2.6 (or newer):
+  http://www.xmms.org/
+- Ruby, version 1.6.x (or newer):
+  http://www.ruby-lang.org/
+
+Installation
+============
+ruby ./extconf.rb            # generate Makefile
+make && su -c "make install" # compile and install library
+
+FAQ
+===
+Q.  Why don't the balance controls work?
+A.  You're probably running XMMS 1.2.6, which has a bug in
+    xmms_remote_{get,set}_balance().  Specifically, they don't appear to
+    work at all when XMMS is stopped.
+
+About the Author
+================
+Paul Duncan <pabs@pablotron.org>
+http://www.pablotron.org/
+
+See the file AUTHORS for additional contributions.
