@@ -30,7 +30,7 @@
 
 #define UNUSED(x)  ((void) (x))
 
-#define VERSION "0.1.1"
+#define VERSION "0.1.2"
 #define NUM_BANDS 10
 #define BAND_MAX 20.0
 #define BAND_MIN -20.0
@@ -1013,9 +1013,9 @@ static VALUE xr_info(VALUE self) {
   xmms_remote_get_info(*session, &rate, &freq, &nch);
 
   ary = rb_ary_new();
-  rb_ary_push(ary, NUM2INT(rate));
-  rb_ary_push(ary, NUM2INT(freq));
-  rb_ary_push(ary, NUM2INT(nch));
+  rb_ary_push(ary, INT2FIX(rate));
+  rb_ary_push(ary, INT2FIX(freq));
+  rb_ary_push(ary, INT2FIX(nch));
 
   return ary;
 }

@@ -32,4 +32,10 @@
 
 * Thursday, May 23 13:13:50 2002 EST, <pabs@pablotron.org>
   * doc: updated rdoc documentation
+  * released version 0.1.1
+
+* Sunday, July 28 16:27:29 2002 EDT, <pabs@pablotron.org>
+  * xmms.c: Fixed get_info bug reported by Charles Blackburn
+    <charlesb@summerfield-technology.co.uk>
+  * 
 
