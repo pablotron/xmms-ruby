@@ -3,18 +3,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>toggle_shuffle (Xmms::Remote)</title>
+<title>is_repeat? (Xmms::Remote)</title>
 <link rel=StyleSheet href="../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body bgcolor="white">
 <pre>/*
- * Toggle the shuffle flag.
+ * Is the repeat flag set?
  *
- * Example:
- *   remote.toggle_shuffle
+ * Examples:
+ *   puts 'repeating' if remote.is_repeating?
+ *   puts 'repeating' if remote.repeating?
+ *   puts 'repeating' if remote.is_repeat?
+ *   puts 'repeating' if remote.repeat?
  *
  */
-static VALUE xr_toggle_shuffle(VALUE self) {
+static VALUE xr_repeat(VALUE self) {
 </pre>
 </body>
 </html>

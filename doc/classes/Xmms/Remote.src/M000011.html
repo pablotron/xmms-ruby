@@ -3,21 +3,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>playlist (Xmms::Remote)</title>
+<title>paused? (Xmms::Remote)</title>
 <link rel=StyleSheet href="../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body bgcolor="white">
 <pre>/*
- * Return the current playlist.
+ * Is XMMS paused?
  *
- * Example:
- *   remote.playlist.each { |i|
- *     title, file = i
- *     puts &quot;'#{title}', #{file}&quot;
- *   }
+ * Examples:
+ *   puts 'paused' if remote.is_paused?
+ *   puts 'paused' if remote.paused?
  *
  */
-static VALUE xr_pl(VALUE self) {
+static VALUE xr_paused(VALUE self) {
 </pre>
 </body>
 </html>

@@ -3,22 +3,22 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>get_playlist_title (Xmms::Remote)</title>
+<title>get_playlist_file (Xmms::Remote)</title>
 <link rel=StyleSheet href="../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body bgcolor="white">
 <pre>/*
- * Get the title of a song.
+ * Get the file path of a song.
  *
  * Examples:
- *   # get the title of the current song
+ *   # get the path of the current song
  *   path = remote.file
  *
- *   # get the title of song 23 in the playlist
+ *   # get the path of song 23 in the playlist
  *   path = remote.file 23
  *
  */
-static VALUE xr_pl_title(int argc, VALUE *argv, VALUE self) {
+static VALUE xr_pl_file(int argc, VALUE *argv, VALUE self) {
 </pre>
 </body>
 </html>

@@ -3,17 +3,24 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>initialize (Xmms::Remote)</title>
+<title>connect (Xmms::Remote)</title>
 <link rel=StyleSheet href="../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body bgcolor="white">
 <pre>/*
- * Xmms::Remote constructor.
+ * Create a new Xmms::Remote object.
  *
- * This function is currently just a placeholder.
+ * Examples:
+ *   # standard setup (one running copy of XMMS)
+ *   remote = Xmms::Remote.new
+ *
+ *   # bind to the third instance of XMMS (for you nutcases who run 
+ *   # multiple instances of XMMS)
+ *   session = 2
+ *   remote = Xmms::Remote.new session
  *
  */
-static VALUE xr_init(int argc, VALUE *argv, VALUE self) {
+VALUE xr_new(int argc, VALUE *argv, VALUE klass) {
 </pre>
 </body>
 </html>

@@ -3,18 +3,24 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>add_url (Xmms::Remote)</title>
+<title>add (Xmms::Remote)</title>
 <link rel=StyleSheet href="../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body bgcolor="white">
 <pre>/*
- * Add a URL to the current playlist.
+ * Add one or more songs to the playlist.
  *
  * Examples:
- *   remote.add_url 'http://www.hhmecca.net/cool_song.mp3'
+ *   # replace the current playlist with one song
+ *   enqueue = false
+ *   remote.add 'path/to/cool_song.mp3', enqueue
+ *
+ *   # add several files to the current playlist
+ *   files = %w{song01.mp3 song02.mp3 song03.mp3 song04.mp3 song05.mp3}
+ *   remote.add *files
  *
  */
-static VALUE xr_pl_add_url(VALUE self, VALUE url) {
+static VALUE xr_pl_add(int argc, VALUE *argv, VALUE self) {
 </pre>
 </body>
 </html>

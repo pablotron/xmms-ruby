@@ -3,26 +3,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>get_eq (Xmms::Remote)</title>
+<title>is_shuffle? (Xmms::Remote)</title>
 <link rel=StyleSheet href="../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body bgcolor="white">
 <pre>/*
- * Get the equalizer settings.
+ * Is the shuffle flag set?
  *
- * This method returns an array.  The first element in the array is the
- * preamp setting, and the second element in the array is an 10 element
- * array of band settings.  So the result would look something like
- * this:
- *
- *   [1.0, [0.0, -0.5, 0.9, 0.0, 0.0, 0.0, 0.2, 0.5, -0.1, 0.0]]
- * 
  * Examples:
- *   preamp, bands = remote.get_equalizer
- *   eq = remote.eq
+ *   puts 'shuffling' if remote.is_shuffling?
+ *   puts 'shuffling' if remote.shuffling?
+ *   puts 'shuffling' if remote.is_shuffle?
+ *   puts 'shuffling' if remote.shuffle?
  *
  */
-static VALUE xr_eq(VALUE self) {
+static VALUE xr_shuffle(VALUE self) {
 </pre>
 </body>
 </html>

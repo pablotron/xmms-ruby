@@ -3,19 +3,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>ins_url (Xmms::Remote)</title>
+<title>add_url (Xmms::Remote)</title>
 <link rel=StyleSheet href="../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body bgcolor="white">
 <pre>/*
- * Insert a URL into the current playlist.
+ * Add a URL to the current playlist.
  *
  * Examples:
- *   # add a url after the 45th element in the playlist
- *   remote.ins_url 'http://www.hhmecca.net/cool_song.mp3', 45
+ *   remote.add_url 'http://www.hhmecca.net/cool_song.mp3'
  *
  */
-static VALUE xr_pl_ins_url(VALUE self, VALUE url, VALUE pos) {
+static VALUE xr_pl_add_url(VALUE self, VALUE url) {
 </pre>
 </body>
 </html>

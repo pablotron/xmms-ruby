@@ -3,22 +3,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>get_playlist_file (Xmms::Remote)</title>
+<title>set_playlist_pos (Xmms::Remote)</title>
 <link rel=StyleSheet href="../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body bgcolor="white">
 <pre>/*
- * Get the file path of a song.
+ * Set the current playlist position.
  *
  * Examples:
- *   # get the path of the current song
- *   path = remote.file
- *
- *   # get the path of song 23 in the playlist
- *   path = remote.file 23
+ *   remote.pos = 45
+ *   remote.position = 45
+ *   remote.set_pos 45
  *
  */
-static VALUE xr_pl_file(int argc, VALUE *argv, VALUE self) {
+static VALUE xr_pl_set_pos(VALUE self, VALUE pos) {
 </pre>
 </body>
 </html>

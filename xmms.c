@@ -28,12 +28,14 @@
 #include <xmms/xmmsctrl.h>
 #include <ruby.h>
 
-#define VERSION "0.1.0"
+#define VERSION "0.1.1"
 #define NUM_BANDS 10
 #define BAND_MAX 20.0
 #define BAND_MIN -20.0
 #define VOL_MAX 100
 #define VOL_MIN 0
+
+#define UNUSED(x)  ((void) (x))
 
 /****************************/
 /* CLASS AND MODULE GLOBALS */
@@ -83,6 +85,8 @@ VALUE xr_new(int argc, VALUE *argv, VALUE klass) {
  *
  */
 static VALUE xr_init(int argc, VALUE *argv, VALUE self) {
+  UNUSED(argc);
+  UNUSED(argv);
   return self;
 }
 
@@ -379,7 +383,7 @@ static VALUE xr_pl_del(VALUE self, VALUE pos) {
  *   remote.clear
  *
  */
-static VALUE xr_pl_clear(VALUE self, VALUE pos) {
+static VALUE xr_pl_clear(VALUE self) {
   int *session;
 
   Data_Get_Struct(self, int, session);
@@ -1308,10 +1312,10 @@ void Init_xmms(void) {
   rb_define_alias(cRemote, "get_volume", "get_main_volume");
   rb_define_alias(cRemote, "volume", "get_main_volume");
 
-  rb_define_method(cRemote, "set_stereo_volume", xr_set_stereo_vol, -1);
-  rb_define_alias(cRemote, "stereo_volume", "set_stereo_volume");
+  rb_define_method(cRemote, "set_stereo_volume", xr_set_stereo_vol, 1);
+  rb_define_alias(cRemote, "stereo_volume=", "set_stereo_volume");
 
-  rb_define_method(cRemote, "set_main_volume", xr_set_main_vol, -1);
+  rb_define_method(cRemote, "set_main_volume", xr_set_main_vol, 1);
   rb_define_alias(cRemote, "main_volume=", "set_main_volume");
   rb_define_alias(cRemote, "volume=", "set_main_volume");
 

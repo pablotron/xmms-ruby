@@ -3,19 +3,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>set_skin (Xmms::Remote)</title>
+<title>get_skin (Xmms::Remote)</title>
 <link rel=StyleSheet href="../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body bgcolor="white">
 <pre>/*
- * Set the current skin file.
+ * Get the current skin file.
  *
  * Examples:
- *   remote.set_skin 'path/to/cool_skin.zip'
- *   remote.skin = 'path/to/cool_skin.zip'
+ *   skin = remote.get_skin
+ *   skin = remote.skin
  *
  */
-static VALUE xr_set_skin(VALUE self, VALUE skin) {
+static VALUE xr_skin(VALUE self) {
 </pre>
 </body>
 </html>

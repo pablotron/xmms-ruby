@@ -3,24 +3,26 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>set_eq (Xmms::Remote)</title>
+<title>get_eq (Xmms::Remote)</title>
 <link rel=StyleSheet href="../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body bgcolor="white">
 <pre>/*
- * Set the equalizer values.
+ * Get the equalizer settings.
  *
- * This method takes either a preamp value and 10 band values, or a
- * preamp value and an array of band values.
+ * This method returns an array.  The first element in the array is the
+ * preamp setting, and the second element in the array is an 10 element
+ * array of band settings.  So the result would look something like
+ * this:
  *
+ *   [1.0, [0.0, -0.5, 0.9, 0.0, 0.0, 0.0, 0.2, 0.5, -0.1, 0.0]]
+ * 
  * Examples:
- *   bands = [0.0, -0.5, 0.9, 0.0, 0.0, 0.0, 0.2, 0.5, -0.1, 0.0]
- *   remote.set_equalizer 0.0, bands
+ *   preamp, bands = remote.get_equalizer
+ *   eq = remote.eq
  *
- *   remote.set_eq 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
- *   
  */
-static VALUE xr_set_eq(int argc, VALUE *argv, VALUE self) {
+static VALUE xr_eq(VALUE self) {
 </pre>
 </body>
 </html>

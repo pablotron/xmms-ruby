@@ -3,20 +3,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>set_eq_band (Xmms::Remote)</title>
+<title>get_eq_band (Xmms::Remote)</title>
 <link rel=StyleSheet href="../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body bgcolor="white">
 <pre>/*
- * Set an equalizer band value.
+ * Get an equalizer band value.
  *
  * Note that legal band indexes range from 0 to 9 instead of 1 to 10.
  * 
- * Example:
- *   remote.set_band 2, 0.5
+ * Examples:
+ *   band = remote.get_band 2
+ *   band = remote.band 8
  *
  */
-static VALUE xr_eq_set_band(VALUE self, VALUE band, VALUE val) {
+static VALUE xr_eq_band(VALUE self, VALUE band) {
 </pre>
 </body>
 </html>

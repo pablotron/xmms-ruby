@@ -3,19 +3,22 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>is_running? (Xmms::Remote)</title>
+<title>get_info (Xmms::Remote)</title>
 <link rel=StyleSheet href="../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body bgcolor="white">
 <pre>/*
- * Is XMMS running?
+ * Get various about the current song.
+ *
+ * Returns an array of bitrate, frequency, and numchannels,
+ * respectively.
  *
  * Examples:
- *   puts 'xmms is running' if remote.is_running?
- *   puts 'xmms is running' if remote.running?
+ *   info = remote.info
+ *   rate, freq, nch = remote.info
  *
  */
-static VALUE xr_running(VALUE self) {
+static VALUE xr_info(VALUE self) {
 </pre>
 </body>
 </html>

@@ -3,22 +3,22 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>get_playlist_time (Xmms::Remote)</title>
+<title>get_playlist_title (Xmms::Remote)</title>
 <link rel=StyleSheet href="../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body bgcolor="white">
 <pre>/*
- * Get the &quot;playlist&quot; time of a song.
+ * Get the title of a song.
  *
  * Examples:
- *   # get the &quot;playlist&quot; time of the current song
- *   time = remote.playlist_time
+ *   # get the title of the current song
+ *   path = remote.file
  *
- *   # get the &quot;playlist&quot; time of song 23 in the playlist
- *   time = remote.playlist_time 23
+ *   # get the title of song 23 in the playlist
+ *   path = remote.file 23
  *
  */
-static VALUE xr_pl_time(int argc, VALUE *argv, VALUE self) {
+static VALUE xr_pl_title(int argc, VALUE *argv, VALUE self) {
 </pre>
 </body>
 </html>
